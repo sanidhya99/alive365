@@ -1,0 +1,13 @@
+from django.db import models
+from doctors.models import *
+from authentication.models import CustomUser
+class Appointments(models.Model):
+    doctor=models.ForeignKey(Doctors,on_delete=models.CASCADE)
+    patient=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    phone=models.CharField(max_length=10)
+    age=models.IntegerField
+    gender=models.CharField(max_length=10)
+    description=models.CharField(max_length=100)
+    time_slot=models.TimeField()
+    def __str__(self):
+        return self.patient.name
