@@ -30,6 +30,23 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+from decouple import Config, Csv
+
+# Specify the path to the .env file
+config = Config(search_path=f'{BASE_DIR}/.env')
+
+# Load environment variables
+DB_NAME = config('DB_NAME')
+DB_USER = config('DB_USER')
+DB_PASSWORD = config('DB_PASSWORD')
+SMS_API_KEY = config('SMS_API_KEY')
+
+
+
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,7 +78,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'alive365.urls'
 
-SMS_API_KEY='6c3e922c-4c61-11ef-8b60-0200cd936042'
+
 
 TEMPLATES = [
     {
@@ -88,9 +105,9 @@ WSGI_APPLICATION = 'alive365.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'alive365',
-        'USER': 'sanidhya',
-        'PASSWORD': '123',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
         'HOST': 'localhost',
         'PORT': '5432',
     }
