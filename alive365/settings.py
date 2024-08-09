@@ -30,10 +30,13 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-from decouple import Config, Csv
+from decouple import Config, RepositoryEnv
+
 
 # Specify the path to the .env file
-config = Config(search_path=f'{BASE_DIR}/.env')
+env_file_path = f'{BASE_DIR}/.env'
+config = Config(RepositoryEnv(env_file_path))
+
 
 # Load environment variables
 DB_NAME = config('DB_NAME')
