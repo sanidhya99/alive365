@@ -11,11 +11,11 @@ class DoctorCategory(models.Model):
         return self.name
 
 class Doctors(CustomUser):
-    category=models.ForeignKey(DoctorCategory, on_delete=models.CASCADE)
+    category=models.ForeignKey(DoctorCategory, related_name="doctor_category", on_delete=models.CASCADE)
     experience = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(1)])  # Adjust the minimum value as needed
     qualification = models.CharField(max_length=4,default="MBBS")
-    qualification_doc = models.CharField(max_length=100000000,default="MBBS",blank=True)
-    identity_doc = models.CharField(max_length=100000000,default="MBBS",blank=True)
+    qualification_doc = models.CharField(max_length=10000,default="MBBS",blank=True,null=True)
+    identity_doc = models.CharField(max_length=10000,default="MBBS",blank=True,null=True)
     price=models.IntegerField()
     time_slot=ArrayField(ArrayField(models.TimeField(),size=2,default=list),blank=True,null=True,default=list)
     def __str__(self):

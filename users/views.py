@@ -91,8 +91,12 @@ class GetAppointments(generics.ListAPIView):
         return queryset
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        try:
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({'message':'Data fetched successfully!','data':serializer.data,'status':200,'status_text':'ok'},status=200)
+        except Exception as e:
+            return Response({'message':'Error!','error':e,'status':400,'status_text':'error'},status=200)
+
 
                 

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
+    'doctors',
+    'users',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders'
@@ -85,8 +87,12 @@ WSGI_APPLICATION = 'alive365.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'alive365',
+        'USER': 'sanidhya',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
