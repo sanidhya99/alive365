@@ -13,7 +13,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 # import timedelta
 from datetime import timedelta
+import environ
 
+env=environ.Env()
+
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,22 +34,16 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-from decouple import Config, RepositoryEnv
-
-
-# Specify the path to the .env file
-env_file_path = f'{BASE_DIR}/.env'
-config = Config(RepositoryEnv(env_file_path))
 
 
 # Load environment variables
 
-DB_NAME = config('DB_NAME')
-DB_USER = config('DB_USER')
-DB_HOST = config('DB_HOST')
-DB_PORT = config('DB_PORT')
-DB_PASSWORD = config('DB_PASSWORD')
-SMS_API_KEY = config('SMS_API_KEY')
+DB_NAME = env('DB_NAME')
+DB_USER = env('DB_USER')
+DB_HOST = env('DB_HOST')
+DB_PORT = env('DB_PORT')
+DB_PASSWORD = env('DB_PASSWORD')
+SMS_API_KEY = env('SMS_API_KEY')
 
 
 
