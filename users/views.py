@@ -6,18 +6,12 @@ from authentication.models import CustomUser
 from rest_framework.permissions import BasePermission,AllowAny
 from alive365.permissions import IsVerified
 from doctors.models import Doctors
-from .models import Appointments
-from .serializers import AppointmentSerializer
+from .models import Appointments,UserOffers
+from .serializers import AppointmentSerializer,FutureAppointmentDetailSerializer,UserOffersSerializer,PastAppointmentDetailSerializer
+from django.utils import timezone
 
 class UserLocation(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny,IsVerified]
-
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        if user is None:
-            return Response({"message": "Not Authenticated"}, status=status.HTTP_403_FORBIDDEN)
-        
-        return Response({"message": "success", "location": user.location}, status=status.HTTP_200_OK)
 
     def patch(self, request, *args, **kwargs):
         user = request.user
@@ -98,5 +92,63 @@ class GetAppointments(generics.ListAPIView):
         except Exception as e:
             return Response({'message':'Error!','error':e,'status':400,'status_text':'error'},status=200)
 
+class GetFutureUserAppointments(generics.ListAPIView):
+    permission_classes=[IsVerified]
+    serializer_class=FutureAppointmentDetailSerializer
+    def get_queryset(self):
+        user = self.request.user
+        today = timezone.now().date()
+        return Appointments.objects.filter(patient=user, date__gte=today)
 
-                
+    def get(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({
+                'message': 'Data fetched successfully!',
+                'data': serializer.data,
+                'status': 200,
+                'status_text': 'ok'
+            }, status=200)
+        except Exception as e:
+            return Response({
+                'message': 'Error!',
+                'error': str(e),  # Return the error as a string
+                'status': 400,
+                'status_text': 'error'
+            }, status=400)  # Return a 400 status code for errors
+    
+class GetUserOffers(generics.ListCreateAPIView):
+    permission_classes=[AllowAny]
+    serializer_class=UserOffersSerializer
+    queryset=UserOffers.objects.all()
+
+
+class GetPastUserAppointments(generics.ListAPIView):
+    permission_classes = [IsVerified]
+    serializer_class = PastAppointmentDetailSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        today = timezone.now().date()
+        return Appointments.objects.filter(patient=user, date__lt=today).order_by('-date')
+
+    def get(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({
+                'message': 'Data fetched successfully!',
+                'data': serializer.data,
+                'status': 200,
+                'status_text': 'ok'
+            }, status=200)
+        except Exception as e:
+            return Response({
+                'message': 'Error!',
+                'error': str(e),
+                'status': 400,
+                'status_text': 'error'
+            }, status=400)
+
+

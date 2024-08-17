@@ -10,3 +10,19 @@ class AppointmentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointments
         fields = '__all__'
+
+class FutureAppointmentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointments
+        fields = ['doctor', 'date', 'time_slot']
+
+class UserOffersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserOffers
+        fields = '__all__'
+
+
+class PastAppointmentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointments
+        fields = ['doctor', 'date', 'time_slot']        

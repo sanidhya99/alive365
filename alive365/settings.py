@@ -39,6 +39,7 @@ config = Config(RepositoryEnv(env_file_path))
 
 
 # Load environment variables
+
 DB_NAME = config('DB_NAME')
 DB_USER = config('DB_USER')
 DB_PASSWORD = config('DB_PASSWORD')

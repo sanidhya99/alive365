@@ -7,4 +7,6 @@ urlpatterns=[
     path("register/" ,DoctorRegistration.as_view(),name="DoctorRegistration"),
     path("login/" ,DoctorLogin.as_view(),name="DoctorLogin"),
     path("otp/" ,VerifyDoctorOTPView.as_view(),name="DoctorOTP"),
+    path("top/" , GetFamousDoctors.as_view(),name="FamousDoctors"),
+    path("list/" , GetFamousDoctors.as_view(),name="GetDoctors"),
             ]

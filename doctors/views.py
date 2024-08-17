@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import generics, status
 from authentication.models import CustomUser
-from .serializers import DoctorsCategorySerializer
+from .serializers import DoctorsCategorySerializer,FamousDoctorsSerializer,DoctorsSerializer
 from .models import DoctorCategory,Doctors
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -105,3 +105,70 @@ class VerifyDoctorOTPView(generics.CreateAPIView):
                 return Response({"message": "Authentication failed"}, status=400)
         except Exception as e:
             return Response({"message": str(e)}, status=500)
+        
+
+
+class GetFamousDoctors(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = FamousDoctorsSerializer
+
+    def get_queryset(self):
+        location = self.request.query_params.get('location', None)
+        queryset = Doctors.objects.all()
+
+        if location:
+            queryset = queryset.filter(location=location)
+
+        return queryset.order_by('-rating')
+
+    def get(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({
+                'message': 'Data fetched successfully!',
+                'data': serializer.data,
+                'status': 200,
+                'status_text': 'ok'
+            }, status=200)
+        except Exception as e:
+            return Response({
+                'message': 'Error!',
+                'error': str(e),
+                'status': 400,
+                'status_text': 'error'
+            }, status=400)
+        
+class GetDoctors(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = FamousDoctorsSerializer
+
+    def get_queryset(self):
+        location = self.request.query_params.get('location', None)
+        category = self.request.query_params.get('category', None)
+        queryset = Doctors.objects.all()
+
+        if location:
+            queryset = queryset.filter(location=location)
+        if category:
+            queryset = queryset.filter(category=category)
+
+        return queryset.order_by('-rating')
+
+    def get(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({
+                'message': 'Data fetched successfully!',
+                'data': serializer.data,
+                'status': 200,
+                'status_text': 'ok'
+            }, status=200)
+        except Exception as e:
+            return Response({
+                'message': 'Error!',
+                'error': str(e),
+                'status': 400,
+                'status_text': 'error'
+            }, status=400)

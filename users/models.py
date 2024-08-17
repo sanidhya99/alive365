@@ -8,6 +8,11 @@ class Appointments(models.Model):
     age=models.IntegerField()
     gender=models.CharField(max_length=10)
     description=models.CharField(max_length=100)
+    address=models.CharField(max_length=100)
+    date=models.DateField()
     time_slot=models.TimeField()
     def __str__(self):
         return self.patient.name
+    
+class UserOffers(models.Model):
+    image=models.CharField(max_length=1000)    
