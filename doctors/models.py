@@ -18,7 +18,7 @@ class Doctors(CustomUser):
     identity_doc = models.CharField(max_length=10000,default="MBBS",blank=True,null=True)
     price=models.IntegerField()
     rating=models.IntegerField(default=0)
-    rating_no=models.IntegerChoices(default=0)
+    rating_no=models.IntegerField(default=0)
     time_slot=ArrayField(ArrayField(models.TimeField(),size=2,default=list),blank=True,null=True,default=list)
     def __str__(self):
         return self.name

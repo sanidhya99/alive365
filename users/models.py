@@ -8,8 +8,8 @@ class Appointments(models.Model):
     age=models.IntegerField()
     gender=models.CharField(max_length=10)
     description=models.CharField(max_length=100)
-    address=models.CharField(max_length=100)
-    date=models.DateField()
+    address=models.CharField(max_length=100,null=True,blank=True)
+    date=models.DateField(blank=True,null=True)
     time_slot=models.TimeField()
     def __str__(self):
         return self.patient.name
