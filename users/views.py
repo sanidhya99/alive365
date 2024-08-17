@@ -33,7 +33,12 @@ class BookAppointment(generics.CreateAPIView):
             # Extract data from request
             doctor_pk = request.data.get("doctor")
             time_slot = request.data.get("time_slot")
-            description = request.data.get('description')
+            phone = request.data.get("phone")
+            age = request.data.get("age")
+            gender = request.data.get("gender")
+            address = request.data.get("address")
+            date = request.data.get("date")
+        
 
             # Validate required fields
             if not doctor_pk or not time_slot:
@@ -55,10 +60,11 @@ class BookAppointment(generics.CreateAPIView):
             appointment = Appointments.objects.create(
                 doctor=doctor,
                 patient=patient,
-                phone=patient.phone,
-                age=patient.age,
-                gender=patient.gender,
-                description=description,
+                phone=phone,
+                age=age,
+                date=date,
+                gender=gender,
+                address=address,
                 time_slot=time_slot
             )
             appointment.save()
@@ -98,7 +104,7 @@ class GetFutureUserAppointments(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         today = timezone.now().date()
-        return Appointments.objects.filter(patient=user, date__gte=today)
+        return Appointments.objects.filter(patient=user, date__gte=today).order_by('date')
 
     def get(self, request, *args, **kwargs):
         try:

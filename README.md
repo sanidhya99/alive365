@@ -21,3 +21,4 @@ Install required dependencies by running the following commands:
 
       python manage.py runserver
 The server should now be running at http://localhost:8000.
+

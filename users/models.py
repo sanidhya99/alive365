@@ -7,7 +7,6 @@ class Appointments(models.Model):
     phone=models.CharField(max_length=10)
     age=models.IntegerField()
     gender=models.CharField(max_length=10)
-    description=models.CharField(max_length=100)
     address=models.CharField(max_length=100,null=True,blank=True)
     date=models.DateField(blank=True,null=True)
     time_slot=models.TimeField()
