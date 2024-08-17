@@ -1,4 +1,5 @@
-django-restframework
+djangorestframework
 python-decouple
 django-cors-headers
-djangorestframework_simplejwt
+djangorestframework-simplejwt
+psycopg2-binary
