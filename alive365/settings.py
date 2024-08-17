@@ -42,6 +42,8 @@ config = Config(RepositoryEnv(env_file_path))
 
 DB_NAME = config('DB_NAME')
 DB_USER = config('DB_USER')
+DB_HOST = config('DB_HOST')
+DB_PORT = config('DB_PORT')
 DB_PASSWORD = config('DB_PASSWORD')
 SMS_API_KEY = config('SMS_API_KEY')
 
@@ -112,8 +114,8 @@ DATABASES = {
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
