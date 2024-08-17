@@ -4,9 +4,6 @@ class CustomUserManager(BaseUserManager):
     use_in_migrations=True
 
     def create_user(self,name,phone,password,**extra_fields):
-        if not email:
-            raise ValueError("ECN not found!")
-        email=self.normalize_email(email)
         user=self.model(name=name,phone=phone,**extra_fields)
         if password:
             user.set_password(password)
