@@ -93,7 +93,7 @@ class VerifyOTPView(generics.CreateAPIView):
             if user.otp == otp:
                 user.otp_verified=True
                 user.save()
-                return Response({"message": "Authenticated Successfully"}, status=200)
+                return Response({"message": "Authenticated Successfully","user":user}, status=200)
             else:
                 return Response({"message": "Authentication failed"}, status=400)
         except Exception as e:
