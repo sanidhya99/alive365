@@ -26,3 +26,8 @@ class PastAppointmentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointments
         fields = ['doctor', 'date', 'time_slot']        
+
+class DateWiseAppointmentSerializer(serializers.ModelSerializer):  
+    class Meta:
+        model = Appointments
+        fields = ['Patient','time_slot',]        

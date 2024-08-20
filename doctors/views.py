@@ -1,3 +1,4 @@
+from users.models import Appointments
 from rest_framework.response import Response
 from rest_framework import generics, status
 from authentication.models import CustomUser
@@ -8,7 +9,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 import random
 import requests
 from rest_framework.permissions import AllowAny
-
+from alive365.permissions import IsVerified
+from users.serializers import DateWiseAppointmentSerializer
 
 def send_otp(mobile, otp):
     """
@@ -172,3 +174,35 @@ class GetDoctors(generics.ListAPIView):
                 'status': 400,
                 'status_text': 'error'
             }, status=400)
+class GetDateWiseAppointments(generics.ListAPIView):        
+    permission_classes=[IsVerified]
+    serializer_class=DateWiseAppointmentSerializer
+
+    def get_queryset(self):
+        queryset=Appointments.objects.all()
+        doctor=self.request.query_params.get('doctor', None)
+        date=self.request.query_params.get('date', None)
+
+        if doctor:
+            queryset=queryset.filter(doctor=doctor)
+        if date:
+            queryset=queryset.filter(date=date)
+        return queryset
+    def get(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({
+                'message': 'Data fetched successfully!',
+                'data': serializer.data,
+                'status': 200,
+                'status_text': 'ok'
+            }, status=200)
+        except Exception as e:
+            return Response({
+                'message': 'Error!',
+                'error': str(e),
+                'status': 400,
+                'status_text': 'error'
+            }, status=400)
+        
