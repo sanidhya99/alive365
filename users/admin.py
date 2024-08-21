@@ -6,14 +6,14 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 class AppointmentAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Basic Info', {'fields': ('doctor','patient','time_slot')}),
-        ('Patient Details', {'fields': ('phone','age','gender','description')}),
+        ('Patient Details', {'fields': ('phone','age','gender')}),
     )
     add_fieldsets = (
         (
             None,
             {
                 'classes': ('wide'),
-                'fields': ('doctor','patient','phone','age','gender','description', 'time_slot'),
+                'fields': ('doctor','patient','phone','age','gender', 'time_slot'),
             },
         ),
     )
