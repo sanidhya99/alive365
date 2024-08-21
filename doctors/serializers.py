@@ -27,3 +27,25 @@ class FamousDoctorsSerializer(serializers.ModelSerializer):
         today = timezone.now().date()
         seven_days_ago = today - timedelta(days=7)
         return Appointments.objects.filter(doctor=obj, date__range=[seven_days_ago, today]).count()
+
+
+class DoctorTimeSlotSerializer(serializers.ModelSerializer):
+    first_time_slot = serializers.SerializerMethodField()
+    last_time_slot = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Doctors
+        fields = ['id', 'name', 'first_time_slot', 'last_time_slot']
+
+    def get_first_time_slot(self, obj):
+        # Extract the first time slot if it exists
+        if obj.time_slot and len(obj.time_slot) > 0:
+            return obj.time_slot[0]
+        return None
+
+    def get_last_time_slot(self, obj):
+        # Extract the last time slot if it exists
+        if obj.time_slot and len(obj.time_slot) > 0:
+            return obj.time_slot[-1]
+        return None        
+

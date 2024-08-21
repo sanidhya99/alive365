@@ -2,7 +2,7 @@ from users.models import Appointments
 from rest_framework.response import Response
 from rest_framework import generics, status
 from authentication.models import CustomUser
-from .serializers import DoctorsCategorySerializer,FamousDoctorsSerializer,DoctorsSerializer
+from .serializers import DoctorsCategorySerializer,FamousDoctorsSerializer,DoctorsSerializer,DoctorTimeSlotSerializer
 from .models import DoctorCategory,Doctors
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -206,3 +206,15 @@ class GetDateWiseAppointments(generics.ListAPIView):
                 'status_text': 'error'
             }, status=400)
         
+
+
+class DoctorTimeSlotView(generics.ListAPIView):
+    serializer_class = DoctorTimeSlotSerializer
+
+    def get_queryset(self):
+        # Extract the doctor ID from query parameters
+        doctor_id = self.request.query_params.get('doctor')
+        
+        if doctor_id:
+            return Doctors.objects.filter(id=doctor_id)
+        return Doctors.objects.none()        

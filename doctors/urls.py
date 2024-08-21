@@ -9,5 +9,6 @@ urlpatterns=[
     path("otp/" ,VerifyDoctorOTPView.as_view(),name="DoctorOTP"),
     path("top/" , GetFamousDoctors.as_view(),name="FamousDoctors"),
     path("list/" , GetDoctors.as_view(),name="GetDoctors"),
-
+    path("appoitments/" , GetDateWiseAppointments.as_view(),name="GetDateWiseAppointment"),
+    path('slots/', DoctorTimeSlotView.as_view(), name='DoctorTimeSlots'),
             ]
