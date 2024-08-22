@@ -12,10 +12,10 @@ class AppointmentDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FutureAppointmentDetailSerializer(serializers.ModelSerializer):
-    doctor = serializers.CharField(source='name')
+    doctor_name = serializers.CharField(source='doctor.name', read_only=True)
     class Meta:
         model = Appointments
-        fields = ['doctor', 'date', 'time_slot']
+        fields = ['doctor_name', 'date', 'time_slot']
 
 class UserOffersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,13 +24,15 @@ class UserOffersSerializer(serializers.ModelSerializer):
 
 
 class PastAppointmentDetailSerializer(serializers.ModelSerializer):
-    doctor = serializers.CharField(source='name')
+    # doctor_name = serializers.CharField(source='name')
+    doctor_name = serializers.CharField(source='doctor.name', read_only=True)
     class Meta:
         model = Appointments
-        fields = ['doctor', 'date', 'time_slot']        
+        fields = ['doctor_name', 'date', 'time_slot']        
 
 class DateWiseAppointmentSerializer(serializers.ModelSerializer):  
-    patient = serializers.CharField(source='name')
+    # patient_name = serializers.CharField(source='name')
+    patient_name = serializers.CharField(source='patient.name', read_only=True)
     class Meta:
         model = Appointments
-        fields = ['Patient','time_slot',]        
+        fields = ['patient_name','time_slot',]        
