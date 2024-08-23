@@ -30,9 +30,21 @@ class PastAppointmentDetailSerializer(serializers.ModelSerializer):
         model = Appointments
         fields = ['doctor_name', 'date', 'time_slot']        
 
-class DateWiseAppointmentSerializer(serializers.ModelSerializer):  
-    # patient_name = serializers.CharField(source='name')
-    # patient_name = serializers.CharField(source='patient.name', read_only=True)
+class DateWiseAppointmentSerializer(serializers.ModelSerializer):
+    patient_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Appointments
-        fields = ['patient_offline','time_slot',"reason"]        
+        fields = ['patient_name', 'time_slot', 'reason']
+
+    def get_patient_name(self, obj):
+        if obj.patient:
+            return obj.patient.name
+        return obj.patient_offline
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # If the patient field is null, remove it from the representation
+        if not instance.patient:
+            representation.pop('patient_name', None)
+        return representation    
