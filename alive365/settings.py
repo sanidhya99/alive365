@@ -11,14 +11,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-# import timedelta
+import timedelta
 from datetime import timedelta
-import environ
 
-env=environ.Env()
-
-environ.Env.read_env()
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -34,16 +29,24 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+from pathlib import Path
+from decouple import Config, RepositoryEnv
 
+# Determine the base directory
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables
+# Specify the .env file path
+env_file_path = f'{BASE_DIR}/.env'
 
-DB_NAME = env('DB_NAME')
-DB_USER = env('DB_USER')
-DB_HOST = env('DB_HOST')
-DB_PORT = env('DB_PORT')
-DB_PASSWORD = env('DB_PASSWORD')
-SMS_API_KEY = env('SMS_API_KEY')
+# Load the .env file
+config = Config(RepositoryEnv(env_file_path))
+
+DB_NAME = config('DB_NAME')
+DB_USER = config('DB_USER')
+DB_HOST = config('DB_HOST')
+DB_PORT = config('DB_PORT')
+DB_PASSWORD = config('DB_PASSWORD')
+SMS_API_KEY = config('SMS_API_KEY')
 
 
 
@@ -65,7 +68,8 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'rest_framework_simplejwt',
-    'corsheaders'
+    'corsheaders',
+    'django_seed',
 ]
 
 MIDDLEWARE = [
@@ -163,7 +167,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
