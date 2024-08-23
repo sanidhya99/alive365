@@ -35,4 +35,4 @@ class DateWiseAppointmentSerializer(serializers.ModelSerializer):
     patient_name = serializers.CharField(source='patient.name', read_only=True)
     class Meta:
         model = Appointments
-        fields = ['patient_name','time_slot',]        
+        fields = ['patient_name','time_slot',"reason"]        

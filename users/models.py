@@ -10,6 +10,7 @@ class Appointments(models.Model):
     address=models.CharField(max_length=100,null=True,blank=True)
     date=models.DateField(blank=True,null=True)
     time_slot=models.TimeField()
+    reason=models.CharField(max_length=20,default="general")
     def __str__(self):
         return self.patient.name
     
