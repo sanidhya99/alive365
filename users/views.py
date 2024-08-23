@@ -29,7 +29,7 @@ class UserLocation(generics.RetrieveUpdateDestroyAPIView):
 class BookAppointment(generics.CreateAPIView):
     permission_classes=[IsVerified]
     def post(self, request, *args, **kwargs):
-        mode=self.request.query_params.get('doctor', None)
+        mode=self.request.query_params.get('mode', None)
         if mode=="user":
             try:
                 # Extract data from request
