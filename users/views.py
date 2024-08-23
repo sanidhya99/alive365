@@ -38,6 +38,8 @@ class BookAppointment(generics.CreateAPIView):
             gender = request.data.get("gender")
             address = request.data.get("address")
             date = request.data.get("date")
+            reason = request.data.get("reason")
+            
         
 
             # Validate required fields
@@ -65,6 +67,7 @@ class BookAppointment(generics.CreateAPIView):
                 date=date,
                 gender=gender,
                 address=address,
+                reason=reason,
                 time_slot=time_slot
             )
             appointment.save()
