@@ -32,7 +32,7 @@ class PastAppointmentDetailSerializer(serializers.ModelSerializer):
 
 class DateWiseAppointmentSerializer(serializers.ModelSerializer):  
     # patient_name = serializers.CharField(source='name')
-    patient_name = serializers.CharField(source='patient.name', read_only=True)
+    # patient_name = serializers.CharField(source='patient.name', read_only=True)
     class Meta:
         model = Appointments
-        fields = ['patient_name','time_slot',"reason"]        
+        fields = ['patient_offline','time_slot',"reason"]        

@@ -3,7 +3,8 @@ from doctors.models import *
 from authentication.models import CustomUser
 class Appointments(models.Model):
     doctor=models.ForeignKey(Doctors, related_name="appointment_doctor", on_delete=models.CASCADE)
-    patient=models.ForeignKey(CustomUser, related_name="appointment_user", on_delete=models.CASCADE)
+    patient=models.ForeignKey(CustomUser, related_name="appointment_user", on_delete=models.CASCADE,null=True,blank=True)
+    patient_offline=models.CharField(max_length=100,null=True,blank=True)
     phone=models.CharField(max_length=10)
     age=models.IntegerField()
     gender=models.CharField(max_length=10)

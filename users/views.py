@@ -29,54 +29,110 @@ class UserLocation(generics.RetrieveUpdateDestroyAPIView):
 class BookAppointment(generics.CreateAPIView):
     permission_classes=[IsVerified]
     def post(self, request, *args, **kwargs):
-        try:
-            # Extract data from request
-            doctor_pk = request.data.get("doctor")
-            time_slot = request.data.get("time_slot")
-            phone = request.data.get("phone")
-            age = request.data.get("age")
-            gender = request.data.get("gender")
-            address = request.data.get("address")
-            date = request.data.get("date")
-            reason = request.data.get("reason")
-            
-        
-
-            # Validate required fields
-            if not doctor_pk or not time_slot:
-                return Response({'error': 'Doctor and time slot are required.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Retrieve doctor and patient objects
+        mode=self.request.query_params.get('doctor', None)
+        if mode=="user":
             try:
-                doctor = Doctors.objects.get(id=doctor_pk)
-            except Doctors.DoesNotExist:
-                return Response({'error': 'Doctor not found.'}, status=status.HTTP_404_NOT_FOUND)
+                # Extract data from request
+                doctor_pk = request.data.get("doctor")
+                time_slot = request.data.get("time_slot")
+                phone = request.data.get("phone")
+                age = request.data.get("age")
+                gender = request.data.get("gender")
+                address = request.data.get("address")
+                date = request.data.get("date")
+                reason = request.data.get("reason")
+                
             
-            patient = CustomUser.objects.get(id=request.user.id)
+
+                # Validate required fields
+                if not doctor_pk or not time_slot:
+                    return Response({'error': 'Doctor and time slot are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Retrieve doctor and patient objects
+                try:
+                    doctor = Doctors.objects.get(id=doctor_pk)
+                except Doctors.DoesNotExist:
+                    return Response({'error': 'Doctor not found.'}, status=status.HTTP_404_NOT_FOUND)
+                
+                patient = CustomUser.objects.get(id=request.user.id)
+                
+                # Check for overlapping appointments
+                if Appointments.objects.filter(doctor=doctor, time_slot=time_slot).exists():
+                    return Response({'message': 'Time Slot Already Booked!','status':400,'status_text':"error"}, status=200)
+
+                # Create appointment
+                appointment = Appointments.objects.create(
+                    doctor=doctor,
+                    patient=patient,
+                    phone=phone,
+                    age=age,
+                    date=date,
+                    gender=gender,
+                    address=address,
+                    reason=reason,
+                    time_slot=time_slot
+                )
+                appointment.save()
+
+                # Return success response
+                return Response({'message': 'Appointment booked successfully.','status':201,'status_text':'ok'}, status=status.HTTP_201_CREATED)
+
+            except Exception as e:
+                return Response({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        else:
+
+            try:
+                # Extract data from request
+                doctor_pk = request.data.get("doctor")
+                patient_offline=request.data.get("patient_offline")
+                time_slot = request.data.get("time_slot")
+                phone = request.data.get("phone")
+                age = request.data.get("age")
+                gender = request.data.get("gender")
+                address = request.data.get("address")
+                date = request.data.get("date")
+                reason = request.data.get("reason")
+                
             
-            # Check for overlapping appointments
-            if Appointments.objects.filter(doctor=doctor, time_slot=time_slot).exists():
-                return Response({'message': 'Time Slot Already Booked!','status':400,'status_text':"error"}, status=200)
 
-            # Create appointment
-            appointment = Appointments.objects.create(
-                doctor=doctor,
-                patient=patient,
-                phone=phone,
-                age=age,
-                date=date,
-                gender=gender,
-                address=address,
-                reason=reason,
-                time_slot=time_slot
-            )
-            appointment.save()
+                # Validate required fields
+                if not doctor_pk or not time_slot:
+                    return Response({'error': 'Doctor and time slot are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Return success response
-            return Response({'message': 'Appointment booked successfully.','status':201,'status_text':'ok'}, status=status.HTTP_201_CREATED)
+                # Retrieve doctor and patient objects
+                try:
+                    doctor = Doctors.objects.get(id=doctor_pk)
+                except Doctors.DoesNotExist:
+                    return Response({'error': 'Doctor not found.'}, status=status.HTTP_404_NOT_FOUND)
+                
+                # patient = CustomUser.objects.get(id=request.user.id)
+                
+                # Check for overlapping appointments
+                if Appointments.objects.filter(doctor=doctor, time_slot=time_slot).exists():
+                    return Response({'message': 'Time Slot Already Booked!','status':400,'status_text':"error"}, status=200)
 
-        except Exception as e:
-            return Response({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                # Create appointment
+                appointment = Appointments.objects.create(
+                    doctor=doctor,
+                    # patient=patient,
+                    patient_offline=patient_offline,
+                    phone=phone,
+                    age=age,
+                    date=date,
+                    gender=gender,
+                    address=address,
+                    reason=reason,
+                    time_slot=time_slot
+                )
+                appointment.save()
+
+                # Return success response
+                return Response({'message': 'Appointment booked successfully.','status':201,'status_text':'ok'}, status=status.HTTP_201_CREATED)
+
+            except Exception as e:
+                return Response({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    
         
 class GetAppointments(generics.ListAPIView):
     permission_classes=[IsVerified]
