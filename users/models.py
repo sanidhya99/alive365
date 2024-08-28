@@ -12,6 +12,7 @@ class Appointments(models.Model):
     date=models.DateField(blank=True,null=True)
     time_slot=models.TimeField()
     reason=models.CharField(max_length=20,default="general")
+    paid=models.BooleanField(default=False)
     def __str__(self):
         return self.patient.name
     

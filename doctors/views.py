@@ -37,6 +37,18 @@ class DoctorsCategories(generics.ListCreateAPIView):
     serializer_class=DoctorsCategorySerializer
     permission_classes=[AllowAny]
     queryset=DoctorCategory.objects.all()
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        limit = self.request.query_params.get('limit', None)
+        
+        if limit is not None:
+            try:
+                limit = int(limit)
+                queryset = queryset[:limit]
+            except ValueError:
+                pass  # If limit is not an integer, ignore it and return the full queryset
+
+        return queryset
 
 
 
