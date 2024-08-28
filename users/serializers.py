@@ -40,11 +40,13 @@ class DateWiseAppointmentSerializer(serializers.ModelSerializer):
     def get_patient_name(self, obj):
         if obj.patient:
             return obj.patient.name
-        return obj.patient_offline
+        elif obj.patient_offline:
+            return obj.patient_offline
+        return None  # Return None if neither patient nor patient_offline is available
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # If the patient field is null, remove it from the representation
-        if not instance.patient:
+        # Remove patient_name from the representation if it's None
+        if representation.get('patient_name') is None:
             representation.pop('patient_name', None)
-        return representation    
+        return representation
