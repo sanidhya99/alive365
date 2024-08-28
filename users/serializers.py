@@ -35,7 +35,7 @@ class DateWiseAppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointments
-        fields = ['patient_name', 'time_slot', 'reason','paid']
+        fields = ['id','patient_name', 'time_slot', 'reason','paid']
 
     def get_patient_name(self, obj):
         if obj.patient:
