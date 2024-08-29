@@ -7,7 +7,7 @@ from rest_framework.permissions import BasePermission,AllowAny
 from alive365.permissions import IsVerified
 from doctors.models import Doctors
 from .models import Appointments,UserOffers
-from .serializers import AppointmentDetailSerializer,AppointmentSerializer,FutureAppointmentDetailSerializer,UserOffersSerializer,PastAppointmentDetailSerializer
+from .serializers import DateWiseAppointmentSerializer,AppointmentDetailSerializer,AppointmentSerializer,FutureAppointmentDetailSerializer,UserOffersSerializer,PastAppointmentDetailSerializer
 from django.utils import timezone
 
 class UserLocation(generics.RetrieveUpdateDestroyAPIView):
@@ -220,7 +220,7 @@ class GetPastUserAppointments(generics.ListAPIView):
 
 class EditAppointments(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=[IsVerified]
-    serializer_class=AppointmentDetailSerializer
+    serializer_class=DateWiseAppointmentSerializer
     queryset=Appointments.objects.all()
     lookup_field='id'
 
