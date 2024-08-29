@@ -243,3 +243,9 @@ class DoctorTimeSlotView(generics.ListAPIView):
         if doctor_id:
             return Doctors.objects.filter(id=doctor_id)
         return Doctors.objects.none()        
+    
+class EditDoctor(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=DoctorsSerializer
+    permission_classes=[IsVerified]
+    queryset=Doctors.objects.all()
+    lookup_field='id'

@@ -11,4 +11,5 @@ urlpatterns=[
     path("list/" , GetDoctors.as_view(),name="GetDoctors"),
     path("appoitments/" , GetDateWiseAppointments.as_view(),name="GetDateWiseAppointment"),
     path('slots/', DoctorTimeSlotView.as_view(), name='DoctorTimeSlots'),
+    path('alter/<int:id>/', EditDoctor.as_view(), name='DoctorAlter'),
             ]
