@@ -11,6 +11,7 @@ import requests
 from rest_framework.permissions import AllowAny
 from alive365.permissions import IsVerified
 from users.serializers import DateWiseAppointmentSerializer
+from twilio.rest import Client
 
 def send_otp(mobile, otp):
     """
@@ -24,6 +25,18 @@ def send_otp(mobile, otp):
         return True
     else:
         return False
+
+# def send_otp(mobile, otp):
+#     account_sid = settings.OTP_SID
+#     auth_token = settings.OTP_AUTH_TOKEN
+#     client = Client(account_sid, auth_token)
+#     message = client.messages.create(
+#         from_=settings.OTP_NUMBER,  # Ensure this is correct
+#         body=f'Hello! Your Alive 365 OTP is {otp}',  # Include the OTP dynamically
+#         to=mobile  # Use the passed mobile number
+#     )
+#     print(message.sid)
+#     return message.sid
 
 def get_tokens(user):
     refresh = RefreshToken.for_user(user)

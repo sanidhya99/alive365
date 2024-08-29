@@ -11,6 +11,18 @@ import requests
 from rest_framework.permissions import BasePermission,AllowAny
 from django.core.exceptions import ObjectDoesNotExist
 
+from twilio.rest import Client
+'''
+account_sid = 'ACeab5e744bbf202b3da95646a111817ad'
+auth_token = '[AuthToken]'
+client = Client(account_sid, auth_token)
+message = client.messages.create(
+  from='+17626004426',
+  body='Hello! Your Alive 365 OTP is xxxxx',
+  to='+18777804236'
+)
+print(message.sid)
+'''
 def send_otp(mobile, otp):
     """
     Send OTP via SMS.
@@ -23,6 +35,28 @@ def send_otp(mobile, otp):
         return True
     else:
         return False
+# def send_otp(mobile, otp):
+#     account_sid = settings.OTP_SID
+#     auth_token = settings.OTP_AUTH_TOKEN
+#     client = Client(account_sid, auth_token)
+#     message = client.messages.create(
+#         from_=settings.OTP_NUMBER,  # Ensure this is correct
+#         body=f'Hello! Your Alive 365 OTP is {otp}',  # Include the OTP dynamically
+#         to=mobile  # Use the passed mobile number
+#     )
+#     print(message.sid)
+#     return message.sid
+#     """
+#     Send OTP via SMS.
+#     url = f"https://2factor.in/API/V1/{settings.SMS_API_KEY}/SMS/{mobile}/{otp}/Your 365 Alive OTP is"
+#     payload = ""
+#     headers = {'content-type': 'application/x-www-form-urlencoded'}
+#     response = requests.get(url, data=payload, headers=headers)
+#     if response.ok:
+#         return True
+#     else:
+#         return False
+#     """
 
 def get_tokens(user):
     refresh = RefreshToken.for_user(user)
