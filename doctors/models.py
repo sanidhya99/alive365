@@ -12,6 +12,7 @@ class DoctorCategory(models.Model):
 
 class Doctors(CustomUser):
     category=models.ForeignKey(DoctorCategory, related_name="doctor_category", on_delete=models.CASCADE,null=True,blank=True)
+    picture=models.CharField(max_length=10000,blank=True,null=True)
     experience = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(1)])  # Adjust the minimum value as needed
     qualification = models.CharField(max_length=4,default="MBBS",null=True,blank=True)
     qualification_doc = models.CharField(max_length=10000,default="MBBS",blank=True,null=True)
