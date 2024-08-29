@@ -7,7 +7,7 @@ class Appointments(models.Model):
     patient_offline=models.CharField(max_length=100,null=True,blank=True)
     phone=models.CharField(max_length=10)
     age=models.IntegerField()
-    gender=models.CharField(max_length=10)
+    gender=models.CharField(max_length=50)
     address=models.CharField(max_length=100,null=True,blank=True)
     date=models.DateField(blank=True,null=True)
     time_slot=models.TimeField()
