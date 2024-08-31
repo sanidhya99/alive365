@@ -178,6 +178,7 @@ class GetDoctors(generics.ListAPIView):
         if location:
             queryset = queryset.filter(location=location)
         if category:
+            category=DoctorCategory.objects.get(name=category)
             queryset = queryset.filter(category=category)
 
         return queryset.order_by('-rating')
