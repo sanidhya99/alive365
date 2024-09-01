@@ -215,7 +215,7 @@ class GetDateWiseAppointments(generics.ListAPIView):
             queryset=queryset.filter(doctor=doctor)
         if date:
             queryset=queryset.filter(date=date)
-        return queryset
+        return queryset.order_by('time_slot')
     def get(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset()
