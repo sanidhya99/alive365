@@ -2,7 +2,7 @@ from users.models import Appointments
 from rest_framework.response import Response
 from rest_framework import generics, status
 from authentication.models import CustomUser
-from .serializers import DoctorsCategorySerializer,FamousDoctorsSerializer,DoctorsSerializer,DoctorTimeSlotSerializer
+from .serializers import GetDoctorsSerializer,DoctorsCategorySerializer,FamousDoctorsSerializer,DoctorsSerializer,DoctorTimeSlotSerializer
 from .models import DoctorCategory,Doctors
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -250,6 +250,12 @@ class DoctorTimeSlotView(generics.ListAPIView):
 class EditDoctor(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=DoctorsSerializer
     permission_classes=[IsVerified]
+    queryset=Doctors.objects.all()
+    lookup_field='id'
+
+class GetDoctor(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=GetDoctorsSerializer
+    permission_classes=[AllowAny]
     queryset=Doctors.objects.all()
     lookup_field='id'
 

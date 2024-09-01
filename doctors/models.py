@@ -21,5 +21,6 @@ class Doctors(CustomUser):
     rating=models.IntegerField(default=0)
     rating_no=models.IntegerField(default=0)
     time_slot=ArrayField(ArrayField(models.TimeField(),size=2,default=list),blank=True,null=True,default=list)
+    bio=models.CharField(max_length=10000,null=True,blank=True)
     def __str__(self):
         return self.name

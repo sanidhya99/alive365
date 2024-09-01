@@ -15,6 +15,12 @@ class DoctorsSerializer(serializers.ModelSerializer):
         model = Doctors
         fields = '__all__'
 
+class GetDoctorsSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    class Meta:
+        model = Doctors
+        fields = ['name', 'category','phone','bio','qualification_doc','identity_doc','picture','time_slot']
+
 class FamousDoctorsSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(read_only=True, slug_field='name')
     appointments_last_7_days = serializers.SerializerMethodField()
