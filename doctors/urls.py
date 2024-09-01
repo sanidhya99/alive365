@@ -12,4 +12,5 @@ urlpatterns=[
     path("appoitments/" , GetDateWiseAppointments.as_view(),name="GetDateWiseAppointment"),
     path('slots/', DoctorTimeSlotView.as_view(), name='DoctorTimeSlots'),
     path('alter/<int:id>/', EditDoctor.as_view(), name='DoctorAlter'),
+    path('analytics/', GetAnalytics.as_view(), name='DcotorAnalytics'),
             ]

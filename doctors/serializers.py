@@ -21,7 +21,7 @@ class FamousDoctorsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctors
-        fields = ['name', 'category', 'rating', 'time_slot', 'appointments_last_7_days']
+        fields = ['id','name', 'category', 'rating', 'time_slot', 'appointments_last_7_days','picture']
 
     def get_appointments_last_7_days(self, obj):
         today = timezone.now().date()

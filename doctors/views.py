@@ -12,6 +12,8 @@ from rest_framework.permissions import AllowAny
 from alive365.permissions import IsVerified
 from users.serializers import DateWiseAppointmentSerializer
 from twilio.rest import Client
+from django.utils import timezone
+from datetime import timedelta
 
 def send_otp(mobile, otp):
     """
@@ -250,3 +252,50 @@ class EditDoctor(generics.RetrieveUpdateDestroyAPIView):
     permission_classes=[IsVerified]
     queryset=Doctors.objects.all()
     lookup_field='id'
+
+class GetAnalytics(generics.ListAPIView):
+    permission_classes = [IsVerified]
+
+    def get_queryset(self):
+        mode = self.request.query_params.get('mode', None)
+        time = self.request.query_params.get('time', None)
+        queryset = Appointments.objects.filter(doctor=self.request.user)
+
+        # Mode filtering
+        if mode:
+            if mode == 'online':
+                queryset = queryset.filter(paid=True)
+            elif mode == 'offline':
+                queryset = queryset.filter(paid=False)
+
+        # Time filtering
+        if time:
+            current_time = timezone.now().date()  # Get current date
+            if time == 'week':
+                time_threshold = current_time - timedelta(weeks=1)
+            elif time == 'month':
+                time_threshold = current_time.replace(month=current_time.month - 1 if current_time.month > 1 else 12)
+            elif time == 'year':
+                time_threshold = current_time.replace(year=current_time.year - 1)
+            
+            queryset = queryset.filter(date__gte=time_threshold)
+
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset()
+            count = queryset.count()
+            return Response({
+                'message': 'Data fetched successfully!',
+                'count': count,
+                'status': 200,
+                'status_text': 'ok'
+            }, status=200)
+        except Exception as e:
+            return Response({
+                'message': 'Error!',
+                'error': str(e),
+                'status': 400,
+                'status_text': 'error'
+            }, status=400)
