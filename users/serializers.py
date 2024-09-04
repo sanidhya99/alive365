@@ -15,7 +15,7 @@ class FutureAppointmentDetailSerializer(serializers.ModelSerializer):
     doctor_name = serializers.CharField(source='doctor.name', read_only=True)
     class Meta:
         model = Appointments
-        fields = ['doctor_name', 'date', 'time_slot']
+        fields = ['doctor_name', 'date', 'time_slot','mode','paid']
 
 class UserOffersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,14 +28,14 @@ class PastAppointmentDetailSerializer(serializers.ModelSerializer):
     doctor_name = serializers.CharField(source='doctor.name', read_only=True)
     class Meta:
         model = Appointments
-        fields = ['doctor_name', 'date', 'time_slot']        
+        fields = ['doctor_name', 'date', 'time_slot','mode','paid']        
 
 class DateWiseAppointmentSerializer(serializers.ModelSerializer):
     patient_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Appointments
-        fields = ['id','patient_name', 'time_slot', 'reason','paid','doctor','date','address','gender','age','phone']
+        fields = ['id','patient_name', 'time_slot', 'reason','paid','doctor','date','address','gender','age','phone','paid','mode']
 
     def get_patient_name(self, obj):
         if obj.patient:

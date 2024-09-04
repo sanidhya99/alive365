@@ -41,6 +41,8 @@ class BookAppointment(generics.CreateAPIView):
                 address = request.data.get("address")
                 date = request.data.get("date")
                 reason = request.data.get("reason")
+                paid = request.data.get("paid")
+                
                 
             
 
@@ -71,7 +73,8 @@ class BookAppointment(generics.CreateAPIView):
                     address=address,
                     reason=reason,
                     time_slot=time_slot,
-                    paid=True
+                    paid=paid,
+                    mode=True
                 )
                 appointment.save()
 
@@ -94,7 +97,7 @@ class BookAppointment(generics.CreateAPIView):
                 address = request.data.get("address")
                 date = request.data.get("date")
                 reason = request.data.get("reason")
-                # paid = request.data.get("paid")
+                paid = request.data.get("paid")
                 
             
 
@@ -126,7 +129,8 @@ class BookAppointment(generics.CreateAPIView):
                     address=address,
                     reason=reason,
                     time_slot=time_slot,
-                    paid=False
+                    paid=paid,
+                    mode=False
                 )
                 appointment.save()
 
