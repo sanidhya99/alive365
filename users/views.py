@@ -41,7 +41,7 @@ class BookAppointment(generics.CreateAPIView):
                 address = request.data.get("address")
                 date = request.data.get("date")
                 reason = request.data.get("reason")
-                paid = request.data.get("paid")
+                # paid = request.data.get("paid")
                 
                 
             

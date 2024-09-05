@@ -6,6 +6,7 @@ from authentication.models import CustomUser
 # Create your models here.
 class DoctorCategory(models.Model):
     name=models.CharField(max_length=50) 
+    icon=models.CharField(max_length=10000,default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkoyUQaux4PEUmEPGc7PodeN8XbgC4aOBsug&s")
     doctors=models.ManyToManyField('Doctors', related_name='categories')
     def __str__(self):
         return self.name
