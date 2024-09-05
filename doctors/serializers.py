@@ -8,7 +8,7 @@ from datetime import timedelta
 class DoctorsCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorCategory
-        fields = ['id','name','icon']
+        fields = ['id','name']
 
 class DoctorsSerializer(serializers.ModelSerializer):
     category_name = serializers.SlugRelatedField(read_only=True, slug_field='name', source='category')
