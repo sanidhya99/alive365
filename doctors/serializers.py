@@ -11,12 +11,13 @@ class DoctorsCategorySerializer(serializers.ModelSerializer):
         fields = ['id','name','icon']
 
 class DoctorsSerializer(serializers.ModelSerializer):
-    category_name = serializers.SlugRelatedField(read_only=True, slug_field='name')
-    category_icon = serializers.SlugRelatedField(read_only=True, slug_field='icon')
-    category_id = serializers.SlugRelatedField(read_only=True, slug_field='id')
+    category_name = serializers.SlugRelatedField(read_only=True, slug_field='name', source='category')
+    category_icon = serializers.SlugRelatedField(read_only=True, slug_field='icon', source='category')
+    category_id = serializers.PrimaryKeyRelatedField(queryset=DoctorCategory.objects.all(), source='category')
+
     class Meta:
         model = Doctors
-        fields = ['name','category','category_name','category_icon','category_id','phone','bio','qualification_doc','identity_doc','picture','time_slot','location','qualification','experience','gender']
+        fields = ['name', 'category', 'category_name', 'category_icon', 'category_id','phone', 'bio', 'qualification_doc', 'identity_doc', 'picture','time_slot', 'location', 'qualification', 'experience', 'gender']
 
 class GetDoctorsSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(read_only=True, slug_field='name')

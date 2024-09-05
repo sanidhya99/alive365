@@ -121,6 +121,7 @@ class VerifyDoctorOTPView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
+        user=Doctors.objects.get(id=user.id)
         otp = request.data.get('otp')
         # print(f"user:{user}")
         if otp is None:
