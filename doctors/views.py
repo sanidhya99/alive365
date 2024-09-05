@@ -14,6 +14,7 @@ from users.serializers import DateWiseAppointmentSerializer
 from twilio.rest import Client
 from django.utils import timezone
 from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 
 def send_otp(mobile, otp):
     """
@@ -265,24 +266,32 @@ class GetAnalytics(generics.ListAPIView):
     def get_queryset(self):
         mode = self.request.query_params.get('mode', None)
         time = self.request.query_params.get('time', None)
+        pay = self.request.query_params.get('payment', None)
         queryset = Appointments.objects.filter(doctor=self.request.user)
 
         # Mode filtering
         if mode:
             if mode == 'online':
-                queryset = queryset.filter(paid=True)
+                queryset = queryset.filter(mode=True)
             elif mode == 'offline':
+                queryset = queryset.filter(mode=False)
+        if pay:
+            if pay == 'online':
+                queryset = queryset.filter(paid=True)
+            elif pay == 'offline':
                 queryset = queryset.filter(paid=False)
-
+        
         # Time filtering
         if time:
             current_time = timezone.now().date()  # Get current date
             if time == 'week':
                 time_threshold = current_time - timedelta(weeks=1)
+            elif time == 'half':
+                time_threshold = current_time - relativedelta(months=6)  # Subtract 6 months
             elif time == 'month':
-                time_threshold = current_time.replace(month=current_time.month - 1 if current_time.month > 1 else 12)
+                time_threshold = current_time - relativedelta(months=1)
             elif time == 'year':
-                time_threshold = current_time.replace(year=current_time.year - 1)
+                time_threshold = current_time - relativedelta(years=1)
             
             queryset = queryset.filter(date__gte=time_threshold)
 
