@@ -73,7 +73,6 @@ class BookAppointment(generics.CreateAPIView):
                     address=address,
                     reason=reason,
                     time_slot=time_slot,
-                    paid=paid,
                     mode=True
                 )
                 appointment.save()
