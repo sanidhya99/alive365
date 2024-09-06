@@ -13,3 +13,4 @@ django-cors-headers==3.8.0
 requests>=2.26.0,<3.0
 twilio
 python-dateutil==2.8.2
+pyjwt
