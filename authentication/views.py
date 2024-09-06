@@ -10,7 +10,7 @@ import random
 import requests
 from rest_framework.permissions import BasePermission,AllowAny
 from django.core.exceptions import ObjectDoesNotExist
-
+import jwt
 from twilio.rest import Client
 '''
 account_sid = 'ACeab5e744bbf202b3da95646a111817ad'
@@ -135,3 +135,22 @@ class VerifyOTPView(generics.CreateAPIView):
             return Response({"message": str(e)}, status=500)
 
               
+class VerifyToken(generics.CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        auth_header = request.headers.get('Authorization', None)
+
+        if auth_header is None or not auth_header.startswith('Bearer '):
+            return Response({'error': 'Authorization header missing or incorrect format'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Extract the token
+        token = auth_header.split(' ')[1]
+
+        try:
+            # Decode the token
+            decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            return Response({'message': 'Token is valid', 'token_status': True}, status=status.HTTP_200_OK)
+        except jwt.ExpiredSignatureError:
+            return Response({'error': 'Token has expired','token_status':False}, status=status.HTTP_200_OK)
+        except jwt.InvalidTokenError:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
+        

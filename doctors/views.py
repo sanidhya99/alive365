@@ -134,10 +134,10 @@ class VerifyDoctorOTPView(generics.CreateAPIView):
                 image=user.picture
                 category=user.category
                 if category:
-                    cat_name=DoctorCategory.objects.get(id=category).name
-                    cat_icon=DoctorCategory.objects.get(id=category).icon
-                    cat_id=DoctorCategory.objects.get(id=category).id
-                    return Response({"message": "Authenticated Successfully","id":user.id,"name":user.name,"location":user.location,"image":image,"category":{"id":cat_id,"name":cat_name,"icon":cat_icon}}, status=200)
+                    # cat_name=DoctorCategory.objects.get(id=category.id).name
+                    # cat_icon=DoctorCategory.objects.get(id=category.id).icon
+                    # cat_id=DoctorCategory.objects.get(id=category.id).id
+                    return Response({"message": "Authenticated Successfully","id":user.id,"name":user.name,"location":user.location,"image":image,"category":{"id":category.id,"name":category.name,"icon":category.icon}}, status=200)
                 else:    
                     return Response({"message": "Authenticated Successfully","id":user.id,"name":user.name,"location":user.location,"image":image,"category":"NULL"}, status=200)
             else:
